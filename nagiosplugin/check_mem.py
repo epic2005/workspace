@@ -10,6 +10,7 @@ CRITICAL=2
 UNKNOWN=3
 
 ext = ['g','m','b']
+unit = {'t':2**40,'g':2**30,'m':2**20,'k':2**10,'b':1}
 
 def opt():
     parser = OptionParser(usage="usage: %prog -w WARNING -c CRITICAL")
@@ -19,7 +20,6 @@ def opt():
 
 
 def convertUnit(s):
-    unit = {'t':2**40,'g':2**30,'m':2**20,'k':2**10,'b':1}
     s = s.lower()
     lastchar = s[-1]
     num = int(s[:-1])
@@ -39,10 +39,10 @@ def main():
     opts, args = opt()
     w = convertUnit(opts.warning)
     c = convertUnit(opts.critical)
-    w =  w/2**20
-    c =  c/2**20
+    w =  w/unit['m']
+    c =  c/unit['m']
     free_mem =  getFreeMemory()
-    free_mem = free_mem/2**20
+    free_mem = free_mem/unit['m']
     if w >= free_mem > c:
         print "WARNING, free: %s MB" % free_mem
         sys.exit(WARNING)
