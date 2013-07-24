@@ -2,6 +2,7 @@
 
 import sys
 import datetime
+from optparse import OptionParser
 
 MONTH = {
     'Jan':1,
@@ -24,6 +25,12 @@ CRICITCAL=2
 UNKOWN=3
 
 now = datetime.datetime.now()
+
+def opt():
+    parser = OptionParser(usage="usage: %prog -w WARNING -c CRITICAL")
+    parser.add_option("-c", default=10,action="store",type="int",dest="critical")
+    parser.add_option("-w", default=5,action="store",type="int",dest="warning")
+    return parser.parse_args()
 
 def tailFile(f,lines):
     from subprocess import Popen, PIPE
@@ -52,9 +59,9 @@ def parseLog(data):
     return ret
 
 def main():
-    
-    w = 2
-    c = 5
+    opts,args = opt()
+    w = opts.warning
+    c = opts.critical
 
     log_data = parseLog(tailFile('/var/log/messages',100))
     import operator
