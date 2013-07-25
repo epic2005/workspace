@@ -15,7 +15,7 @@ class Host(models.Model):
     cpunum = models.IntegerField(max_length=2)
     memory = models.CharField(max_length=30)
     ipaddr = models.IPAddressField(max_length=15)
-    
+    uuid = models.CharField(max_length=30)    
 
     def __unicode__(self):
         return self.hostname

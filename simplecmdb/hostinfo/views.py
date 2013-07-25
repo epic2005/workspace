@@ -24,6 +24,7 @@ def collect(request):
         memory = req.POST.get('memory')
         ipaddr = req.POST.get('ip')
         #ipaddrs = req.POST.get('ipaddr')
+        uuid = req.POST.get('uuid')
 
         try:
             host = Host.objects.get(hostname=hostname)
@@ -40,12 +41,12 @@ def collect(request):
         host.cpunum = cpu_num
         host.memory = memory
         host.ipaddr = ipaddr
+        host.uuid = uuid
         host.save()
         
         return HttpResponse("ok")
     else:
         return HttpResponse("no post data")
-
 
 def gethosts(req):
     d=[]
@@ -70,3 +71,4 @@ def gethoststxt(req):
             ips = ','.join([i.ipaddr for i in h.ipaddr_set.all()])
             d += "%s %s %s\n" % (hg.name, h.hostname, ips)
     return HttpResponse(d)
+
