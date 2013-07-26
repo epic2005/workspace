@@ -3,6 +3,7 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from models import Host, HostGroup
+import hashlib
 
 try:
     import json
@@ -24,7 +25,9 @@ def collect(request):
         memory = req.POST.get('memory')
         ipaddr = req.POST.get('ip')
         #ipaddrs = req.POST.get('ipaddr')
-        uuid = req.POST.get('uuid')
+        m = hashlib.md5()
+        m.update(req.POST.get('uuid'))
+        uuid = m.hexdigest()
 
         try:
             host = Host.objects.get(hostname=hostname)
